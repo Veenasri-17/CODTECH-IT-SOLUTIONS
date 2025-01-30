@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vakeel Veenasri - Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Vakeel Veenasri</h1>
+                <p class="hero-subtitle">Web Developer | Engineering Student | Passionate about AI</p>
+                <button class="cta-btn" onclick="scrollToSection('about')">Explore More</button>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>
+                    Hi, I'm Vakeel Veenasri, a 3rd-year undergraduate engineering student with a passion for building
+                    impactful and innovative projects. I specialize in web development, machine learning, and software
+                    design, aiming to solve real-world problems through technology.
+                </p>
+                <h3>My Skills:</h3>
+                <ul>
+                    <li>Programming Languages: Python, JavaScript, HTML, CSS</li>
+                    <li>Frameworks & Libraries: React.js, GSAP</li>
+                    <li>Tools: Git, Figma, Visual Studio Code</li>
+                    <li>Domain Knowledge: Machine Learning, Web Development</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section projects">
+            <div class="container">
+                <h2>Projects</h2>
+                <div class="project">
+                    <h3>To-Do List Website</h3>
+                    <p>A productivity tool designed to manage daily tasks effectively. Integrates visual graphs to help users
+                        monitor progress. Built with HTML, CSS, and JavaScript, this project emphasizes intuitive UI and
+                        seamless functionality.</p>
+                </div>
+                <div class="project">
+                    <h3>Fake Review Monitoring</h3>
+                    <p>An advanced system utilizing machine learning algorithms to detect fraudulent reviews. Designed to
+                        enhance transparency and trust for online platforms. This project incorporates Python and ML libraries
+                        to deliver impactful results.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact">
+            <div class="container">
+                <h2>Contact Me</h2>
+                <p>If you’d like to connect or collaborate, feel free to reach out!</p>
+                <p>Email: <a href="mailto:vakeelveenasri@gmail.com">vakeelveenasri@gmail.com</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Vakeel Veenasri. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
