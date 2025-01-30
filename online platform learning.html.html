@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Learning Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    .content {
+      margin-top: 20px;
+    }
+    .video-container {
+      margin-bottom: 20px;
+    }
+    video {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Online Learning Platform</h1>
+
+  <!-- Registration Section -->
+  <section id="registration-section">
+    <h2>Registration</h2>
+    <button onclick="toggleRegistrationForm()">Register</button>
+    <div id="registration-form" class="hidden">
+      <input id="register-name" placeholder="Name" />
+      <input id="register-email" placeholder="Email" />
+      <input id="register-password" type="password" placeholder="Password" />
+      <button id="register-submit" onclick="register()" disabled>Submit Registration</button>
+    </div>
+  </section>
+
+  <!-- Video Lessons Section -->
+  <section id="videos-section" class="hidden">
+    <h2>Video Lessons</h2>
+    <div id="videos" class="content"></div>
+  </section>
+
+  <!-- Quiz Section -->
+  <section id="quizzes-section" class="hidden">
+    <h2>Quizzes</h2>
+    <div id="quizzes" class="content"></div>
+  </section>
+
+  <!-- Progress Tracking Section -->
+  <section id="progress-section" class="hidden">
+    <h2>Progress Tracking</h2>
+    <div id="progress" class="content"></div>
+  </section>
+
+  <script>
+    // Check if fields are filled before enabling the submit button
+    function checkFields() {
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const submitButton = document.getElementById('register-submit');
+
+      // Enable submit button if all fields are filled
+      submitButton.disabled = !(name && email && password);
+    }
+
+    // Toggle Registration Form Visibility
+    function toggleRegistrationForm() {
+      const form = document.getElementById('registration-form');
+      form.classList.toggle('hidden');
+    }
+
+    // Handle Registration
+    function register() {
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+
+      if (name && email && password) {
+        // Save the user data in localStorage
+        localStorage.setItem('user', JSON.stringify({ name, email, password }));
+        alert('Registered successfully!');
+        document.getElementById('registration-form').classList.add('hidden');
+        showLearningContent(); // Show video lessons, quizzes, and progress
+      }
+    }
+
+    // Show Video Lessons, Quizzes, and Progress Tracking
+    function showLearningContent() {
+      document.getElementById('videos-section').classList.remove('hidden');
+      document.getElementById('quizzes-section').classList.remove('hidden');
+      document.getElementById('progress-section').classList.remove('hidden');
+
+      fetchVideos();
+      fetchQuizzes();
+      fetchProgress();
+    }
+
+    // Fetch Video Lessons (Updated with actual HTML, CSS, and JS videos)
+    function fetchVideos() {
+      const videos = [
+        { 
+          title: 'HTML Tutorial for Beginners', 
+          url: 'https://www.youtube.com/watch?v=UB1O30fR-EE' 
+        },
+        { 
+          title: 'CSS Tutorial for Beginners', 
+          url: 'https://www.youtube.com/watch?v=1Rs2ND1ryYc' 
+        },
+        { 
+          title: 'JavaScript Tutorial for Beginners', 
+          url: 'https://www.youtube.com/watch?v=hdI2bqOjy3c' 
+        }
+      ];
+
+      const videoContainer = document.getElementById('videos');
+      videoContainer.innerHTML = videos
+        .map((video) => `
+          <div class="video-container">
+            <h3>${video.title}</h3>
+            <a href="${video.url}" target="_blank">Watch Video</a>
+          </div>
+        `)
+        .join('');
+    }
+
+    // Fetch Quizzes (hard-coded data)
+    function fetchQuizzes() {
+      const quizzes = [
+        {
+          question: 'What does HTML stand for?',
+          options: ['Hyper Text Markup Language', 'High Text Markup Language', 'Hyperlinks and Text Markup Language'],
+          correctAnswer: 'Hyper Text Markup Language',
+        },
+        {
+          question: 'What does CSS stand for?',
+          options: ['Cascading Style Sheets', 'Colorful Style Sheets', 'Computer Style Sheets'],
+          correctAnswer: 'Cascading Style Sheets',
+        },
+      ];
+
+      const quizContainer = document.getElementById('quizzes');
+      quizContainer.innerHTML = quizzes
+        .map(
+          (quiz) => `
+            <div class="quiz-container">
+              <p>${quiz.question}</p>
+              ${quiz.options
+                .map(
+                  (option) =>
+                    `<button onclick="checkAnswer('${option}', '${quiz.correctAnswer}')">${option}</button>`
+                )
+                .join('')}
+            </div>
+          `
+        )
+        .join('');
+    }
+
+    // Check Answer for the Quiz
+    function checkAnswer(selectedAnswer, correctAnswer) {
+      alert(selectedAnswer === correctAnswer ? 'Correct!' : 'Wrong!');
+    }
+
+    // Fetch Progress Tracking (local data)
+    function fetchProgress() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const progressContainer = document.getElementById('progress');
+      progressContainer.innerHTML = user
+        ? `Welcome, ${user.name}. Progress will be shown here.`
+        : 'Please register to see your progress.';
+    }
+
+    // Enable the Submit button once the fields are checked on input
+    document.getElementById('register-name').addEventListener('input', checkFields);
+    document.getElementById('register-email').addEventListener('input', checkFields);
+    document.getElementById('register-password').addEventListener('input', checkFields);
+  </script>
+</body>
+</html>
