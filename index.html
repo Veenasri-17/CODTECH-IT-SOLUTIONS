@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="E-commerce PWA">
+    <title>E-Commerce PWA</title>
+    <style>
+        /* Styles (styles.css) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        header { background: #333; color: white; padding: 10px; text-align: center; }
+        h1 { font-size: 2em; }
+        #cart { position: absolute; top: 10px; right: 10px; font-size: 1.2em; }
+        .product-list { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 20px; }
+        .product { background: white; padding: 15px; text-align: center; width: 200px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .product img { width: 100%; border-radius: 8px; }
+        button { background: #333; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; }
+        button:hover { background: #555; }
+        footer { text-align: center; padding: 10px; background: #333; color: white; margin-top: 20px; }
+        @media (max-width: 600px) { .product-list { flex-direction: column; align-items: center; } }
+    </style>
+    <link rel="manifest" href="data:application/json, { 'name': 'E-Commerce PWA', 'short_name': 'E-Commerce', 'start_url': '/', 'display': 'standalone', 'background_color': '#ffffff', 'theme_color': '#333333' }">
+</head>
+<body>
+    <header>
+        <h1>Online Shop</h1>
+        <div id="cart">Cart (0 items)</div>
+    </header>
+
+    <main>
+        <section class="product-list">
+            <div class="product" data-id="1">
+                <img src="https://via.placeholder.com/150" alt="Product 1">
+                <h2>Product 1</h2>
+                <p>$20</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product" data-id="2">
+                <img src="https://via.placeholder.com/150" alt="Product 2">
+                <h2>Product 2</h2>
+                <p>$30</p>
+                <button>Add to Cart</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 E-Commerce</p>
+    </footer>
+
+    <script>
+        // App logic (app.js)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(error => {
+                    console.log('Service Worker registration failed:', error);
+                });
+            });
+        }
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartDisplay = document.getElementById('cart');
+
+        function updateCart() {
+            cartDisplay.textContent = `Cart (${cart.length} items)`;
+        }
+
+        document.querySelectorAll('.product button').forEach(button => {
+            button.addEventListener('click', () => {
+                const productId = button.closest('.product').dataset.id;
+                cart.push(productId);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCart();
+            });
+        });
+
+        updateCart();
+    </script>
+
+    <script>
+        // Service Worker (service-worker.js)
+        const CACHE_NAME = 'ecommerce-cache-v1';
+        const ASSETS = ['/', '/index.html'];
+
+        self.addEventListener('install', event => {
+            event.waitUntil(
+                caches.open(CACHE_NAME).then(cache => {
+                    return cache.addAll(ASSETS);
+                })
+            );
+        });
+
+        self.addEventListener('fetch', event => {
+            event.respondWith(
+                caches.match(event.request).then(response => {
+                    return response || fetch(event.request);
+                })
+            );
+        });
+
+        self.addEventListener('activate', event => {
+            event.waitUntil(
+                caches.keys().then(keys => {
+                    return Promise.all(
+                        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+                    );
+                })
+            );
+        });
+    </script>
+
+    <script>
+        // Offline page (offline.html)
+        if (!navigator.onLine) {
+            document.body.innerHTML = "<h1>You are offline!</h1><p>Check back later when you are online.</p>";
+        }
+    </script>
+</body>
+</html>
